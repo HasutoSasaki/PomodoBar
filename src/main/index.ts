@@ -1,5 +1,5 @@
 import { app, ipcMain, Tray, Menu, nativeImage, Notification } from 'electron'
-import { electronApp, is, optimizer } from '@electron-toolkit/utils'
+import { electronApp, optimizer } from '@electron-toolkit/utils'
 
 let tray: Tray | null = null
 
@@ -10,7 +10,6 @@ let timeLeft = 25 * 60 // 25分（秒）
 let timer: NodeJS.Timeout | null = null
 
 function createTray(): void {
-  // 透明な小さなアイコンを作成（タイトルのみを表示するため）
   const emptyIcon = nativeImage.createEmpty()
   tray = new Tray(emptyIcon)
 
