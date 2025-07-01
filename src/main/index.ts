@@ -97,7 +97,8 @@ function toggleTimer(): void {
         new Notification({
           title: notificationTitle,
           body: notificationBody,
-          silent: false
+          silent: false,
+          sound: 'default'
         }).show()
 
       }
