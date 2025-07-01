@@ -1,5 +1,5 @@
 import { app, ipcMain, Tray, Menu, nativeImage, Notification } from 'electron'
-import { electronApp, optimizer } from '@electron-toolkit/utils'
+import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 
 let tray: Tray | null = null
 
@@ -9,14 +9,12 @@ let isBreak = false
 let timeLeft = 25 * 60 // 25分（秒）
 let timer: NodeJS.Timeout | null = null
 
-
 function createTray(): void {
   // 透明な小さなアイコンを作成（タイトルのみを表示するため）
   const emptyIcon = nativeImage.createEmpty()
   tray = new Tray(emptyIcon)
 
   updateTrayTitle()
-
 
   updateTrayMenu()
 }
@@ -68,7 +66,6 @@ function toggleTimer(): void {
       timeLeft--
       updateTrayTitle()
 
-
       if (timeLeft <= 0) {
         // タイマー終了
         isRunning = false
@@ -89,10 +86,13 @@ function toggleTimer(): void {
         }
 
         updateTrayTitle()
+        updateTrayMenu()
 
         // OSのシステム通知を表示
         const notificationTitle = isBreak ? 'Break time!' : 'Work time!'
-        const notificationBody = isBreak ? 'Time for a 5-minute break! ☕' : 'Time to get back to work! 🍅'
+        const notificationBody = isBreak
+          ? 'Time for a 5-minute break! ☕'
+          : 'Time to get back to work! 🍅'
 
         new Notification({
           title: notificationTitle,
@@ -100,7 +100,6 @@ function toggleTimer(): void {
           silent: false,
           sound: 'default'
         }).show()
-
       }
     }, 1000)
   } else {
@@ -111,9 +110,7 @@ function toggleTimer(): void {
   }
 
   updateTrayTitle()
-  updateTrayMenu() // コンテキストメニューを更新
-
-
+  updateTrayMenu()
 }
 
 function resetTimer(): void {
@@ -127,7 +124,7 @@ function resetTimer(): void {
   timeLeft = 25 * 60
 
   updateTrayTitle()
-  updateTrayMenu() // コンテキストメニューを更新
+  updateTrayMenu()
 }
 
 // This method will be called when Electron has finished
